@@ -2,7 +2,7 @@ let store = {drivers: [], passengers: [], trips: [] };
 
 let driverId = 0; 
 let passengerId = 0;
-let tripID = 0
+let tripId = 0
 
 
 
@@ -14,12 +14,30 @@ class Driver {
         store.drivers.push(this);
     }
     trips() {
+        // console.log(store);
         return store.trips.filter(
             function(trip) {
+                // console.log(trip)
                 return trip.driverId === this.id;
             }.bind(this)
         );
     }
+
+    passengers() {
+        const passengers = [];
+        this.trips().forEach (
+          function(trip) {
+            passengers.push(store.passengers.find(
+              function(passenger) {
+                return trip.passengerId === passenger.id
+              }
+            ))
+          }
+        )
+        return passengers;
+      }
+
+   
 }
 
 class Passenger {
@@ -29,13 +47,27 @@ class Passenger {
  
         store.passengers.push(this);
     }
-    trip() {
+    trips() {
         return store.trips.filter(
             function(trip) {
                 return trip.passengerId === this.id;
             }.bind(this)
         );
     }
+
+    drivers() {
+        const drivers = [];
+        this.trips().forEach (
+          function(trip) {
+            drivers.push(store.drivers.find(
+              function(driver) {
+                return trip.driverId === driver.id
+              }
+            ))
+          }
+        )
+        return drivers;
+      }
 }
 
 
